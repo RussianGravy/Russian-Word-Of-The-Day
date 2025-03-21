@@ -22,10 +22,18 @@ from email.mime.text import MIMEText
 message = MIMEMultipart()
 message["From"] = sender_email
 message["To"] = reciever_email
-message["Subject"] = "Russian Mailing List"
+message["Subject"] = "Valentine's Russian Words Of The Day"
 
+header = f"""
+    <h3
+    style="background-color: red; color: white; padding: 5px;"
+    >
+    This week's setting: {setting}
+    </h3>
+"""
 body = llm.getTodaysWords(gemini_api_key, setting)
-message.attach(MIMEText(body))
+message.attach(MIMEText(header, "html"))
+message.attach(MIMEText(body, "plain"))
 
 #send the email
 server = smtplib.SMTP(smtp_server, smtp_port)

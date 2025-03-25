@@ -1,0 +1,3 @@
+Руль (Steering wheel)
+Сиденье (Seat)
+Зеркало (Mirror)

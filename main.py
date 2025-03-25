@@ -31,9 +31,13 @@ header = f"""
     This week's setting: {setting}
     </h3>
 """
-body = llm.getTodaysWords(gemini_api_key, setting)
+body = f"""
+    <p>
+    {llm.getTodaysWords(gemini_api_key, setting)}
+    </p>
+"""
 message.attach(MIMEText(header, "html"))
-message.attach(MIMEText(body, "plain"))
+message.attach(MIMEText(body, "html"))
 
 #send the email
 server = smtplib.SMTP(smtp_server, smtp_port)

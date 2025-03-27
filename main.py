@@ -26,18 +26,16 @@ message["Subject"] = "Valentine's Russian Words Of The Day"
 
 header = f"""
     <h3
-    style="background-color: red; color: white; padding: 5px;"
+    style="background-color: #e31414; color: white; padding: 5px;"
     >
     This week's setting: {setting}
     </h3>
 """
 body = f"""
-    <p>
     {llm.getTodaysWords(gemini_api_key, setting)}
-    </p>
 """
 message.attach(MIMEText(header, "html"))
-message.attach(MIMEText(body, "html"))
+message.attach(MIMEText(body, "plain"))
 
 #send the email
 server = smtplib.SMTP(smtp_server, smtp_port)

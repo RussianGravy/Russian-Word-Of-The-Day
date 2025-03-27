@@ -11,7 +11,8 @@ reciever_email = os.getenv("reciever_email")
 sender_email = os.getenv("sender_email")
 password = os.getenv("sender_password")
 
-setting = "the cab of his car."
+topic_file = open("current_topic.txt")
+setting = topic_file.read()
 
 import llm
 import smtplib
@@ -25,17 +26,23 @@ message["To"] = reciever_email
 message["Subject"] = "Valentine's Russian Words Of The Day"
 
 header = f"""
-    <h3
-    style="background-color: #e31414; color: white; padding: 5px;"
-    >
-    This week's setting: {setting}
+    <h3>
+        Topic: <span style="color:red"> {setting} </span>
     </h3>
 """
-body = f"""
-    {llm.getTodaysWords(gemini_api_key, setting)}
-"""
+
 message.attach(MIMEText(header, "html"))
-message.attach(MIMEText(body, "plain"))
+
+todays_words = llm.getTodaysWords(gemini_api_key, setting)
+
+for word in todays_words:
+    message.attach(
+        MIMEText(
+        f"""
+        <li>{word}</li>
+        """,          
+        "html")
+    )
 
 #send the email
 server = smtplib.SMTP(smtp_server, smtp_port)

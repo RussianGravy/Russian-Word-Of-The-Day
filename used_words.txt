@@ -1,3 +1,5 @@
-Руль (Steering wheel)
-Сиденье (Seat)
-Зеркало (Mirror)
+Крыша (Roof)
+Антенна (Antenna)
+Вид (View)
+Громоотвод (Lightning rod), Перила (Railing), Лестница (Ladder)
+Окно (Window), Стекло (Glass), Высота (Height)

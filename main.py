@@ -11,8 +11,8 @@ reciever_email = os.getenv("reciever_email")
 sender_email = os.getenv("sender_email")
 password = os.getenv("sender_password")
 
-topic_file = open("current_topic.txt")
-setting = topic_file.read()
+topicFile = open("current_topic.txt")
+setting = topicFile.read()
 
 import llm
 import smtplib

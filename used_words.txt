@@ -1,4 +1,0 @@
-Руль (Steering wheel)
-Сиденье (Seat)
-Зеркало (Mirror)
-Педаль (Pedal), Дверь (Door), Окно (Window)

@@ -11,9 +11,9 @@ def getTodaysWords(provider_api_key:str, setting:str):
         response = client.models.generate_content(
             model="gemini-2.0-flash", contents=(
                 f"""
-                Without rephrasing my prompt, 
-                generate three common Russian nouns with english translations to use at a {setting}.  
-                Seperate the words with commas and do not use any of these words: {used_words} 
+                Without including the prompt in your answer, Generate three common Russian noun (in Cyrillic script with its English translation in parentheses) 
+                , each seperated by commas, that a customer might use at a {setting} to refer to an object, 
+                ensuring it's not one of the following: {used_words}
                 """)
         )
         # save response as yesterdays words

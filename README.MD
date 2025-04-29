@@ -1,1 +1,1 @@
-#Russian Word Of The Day email server
+# Russian Word Of The Day email server

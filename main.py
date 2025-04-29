@@ -3,6 +3,8 @@ import os
 
 load_dotenv()
 
+project_dir = os.path.dirname(os.path.abspath(__file__))
+
 smtp_server = os.getenv("smtp_server")
 smtp_port = 587
 reciever_email = os.getenv("reciever_email")

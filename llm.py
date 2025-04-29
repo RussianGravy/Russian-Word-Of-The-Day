@@ -5,12 +5,16 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+project_dir = os.path.dirname(os.path.abspath(__file__))
+
 gemini_api_key = os.getenv("gemini_api_key")
 
 setting = "Gas Station"
 
 def generateNewWords(api_key:str, setting:str):
-    with open("words.txt", "r+") as file:
+    path = project_dir+"/words.txt"
+    print(path)
+    with open(path, "r+") as file:
         prompt = f"""Without including the prompt in your response, please generate thirty Russian nouns in cyrillic script with their english translations in parenthesis and each on its own line. The nouns should be loosely related to {setting}, as well."""
         client = genai.Client(api_key = api_key)
         response = client.models.generate_content(
@@ -21,14 +25,16 @@ def generateNewWords(api_key:str, setting:str):
         return response.text
 
 def getTodaysWords():
-    path = Path("words.txt")
-    with path.open("r+") as file:
+    path = project_dir+"/words.txt"
+    print(path)
+    p = Path(path)
+    with p.open("r+") as file:
         try: 
             words = [file.readline(), file.readline()]
             text = file.read()
             if (len(text) == 0):
                 words = ["There was an issue generating your words today"]
-            path.write_text(text)
+            p.write_text(text)
             file.close()
         except Exception as e:
             print(e)

@@ -9,7 +9,7 @@ project_dir = os.path.dirname(os.path.abspath(__file__))
 
 gemini_api_key = os.getenv("gemini_api_key")
 
-setting = "Gas Station"
+setting = "furniture"
 
 def generateNewWords(api_key:str, setting:str):
     path = project_dir+"/words.txt"

@@ -3,18 +3,15 @@ import os
 
 load_dotenv()
 
-gemini_api_key = os.getenv("gemini_api_key")
-
 smtp_server = os.getenv("smtp_server")
 smtp_port = 587
 reciever_email = os.getenv("reciever_email")
 sender_email = os.getenv("sender_email")
 password = os.getenv("sender_password")
 
-topicFile = open("current_topic.txt")
-setting = topicFile.read()
+print(password)
 
-import llm
+from llm import getTodaysWords, setting
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -33,7 +30,7 @@ header = f"""
 
 message.attach(MIMEText(header, "html"))
 
-todays_words = llm.getTodaysWords(gemini_api_key, setting)
+todays_words = getTodaysWords()
 
 for word in todays_words:
     message.attach(
@@ -44,7 +41,7 @@ for word in todays_words:
         "html")
     )
 
-#send the email
+# send the email
 server = smtplib.SMTP(smtp_server, smtp_port)
 try:
     server.starttls()
@@ -55,4 +52,4 @@ try:
 except Exception as e:
     print(f"Error: {e}")
 finally:
-    server.quit();
+    server.quit()

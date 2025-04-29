@@ -1,54 +1,38 @@
+from pathlib import Path
 from google import genai
+import os
+from dotenv import load_dotenv
 
-def getSpentWords():
-    file = open("used_words.txt", "r")
-    return file.read()
+load_dotenv()
 
-def getTodaysWords(provider_api_key:str, setting:str):
-    try:
-        used_words = getSpentWords()
-        client = genai.Client(api_key = provider_api_key)
-        response = client.models.generate_content(
-            model="gemini-2.0-flash", contents=(
-                f"""
-                Without including the prompt in your answer, Generate three common Russian noun (in Cyrillic script with its English translation in parentheses) 
-                , each seperated by commas, that a customer might use at a {setting} to refer to an object, 
-                ensuring it's not one of the following: {used_words}
-                """)
-        )
-        # save response as yesterdays words
-        file = open("used_words.txt", "a")
-        file.write(response.text)
-        # return response
-        return response.text.split(", ")
-    except Exception as e:
-        print(e)
-        return "Unfortunately, an issue occurred generating your words today."
+gemini_api_key = os.getenv("gemini_api_key")
 
-def getNewTopic(provider_api_key:str):
-    try:
-        # get current topic
-        curT_file = open("current_topic.txt", "w")
-        # get used topics
-        usedTs_file = open("used_topics.txt")
-        used_topics = usedTs_file.read()
-        # prompt ai for new topic
-        prompt = f"""
-            WIthout rephrasing my prompt generate one commonplace setting that is at most two words. Do not use any of these: {used_topics}. \
-        """
-        client = genai.Client(api_key = provider_api_key)
+setting = "Gas Station"
+
+def generateNewWords(api_key:str, setting:str):
+    with open("words.txt", "r+") as file:
+        prompt = f"""Without including the prompt in your response, please generate thirty Russian nouns in cyrillic script with their english translations in parenthesis and each on its own line. The nouns should be loosely related to {setting}, as well."""
+        client = genai.Client(api_key = api_key)
         response = client.models.generate_content(
             model="gemini-2.0-flash", contents=(prompt)
         )
-        # update txt files && return new topic
-        curT_file.write(response.text)
-        usedTs_file = open("used_topics.txt", "a")
-        usedTs_file.write(response.text)
-        usedWs_file = open("used_words.txt", "w")
-        usedWs_file.write("")
+        file.write(response.text)
+        print(response.text)
         return response.text
-    except Exception as e:
-        # use last topic in case of exception
-        print(e)
-        curT_file = open("current_topic.txt")
-        return curT_file.read()
+
+def getTodaysWords():
+    path = Path("words.txt")
+    with path.open("r+") as file:
+        try: 
+            words = [file.readline(), file.readline()]
+            text = file.read()
+            if (len(text) == 0):
+                words = ["There was an issue generating your words today"]
+            path.write_text(text)
+            file.close()
+        except Exception as e:
+            print(e)
+        return words
+
+if __name__ == "__main__":
+    generateNewWords(gemini_api_key, setting)
